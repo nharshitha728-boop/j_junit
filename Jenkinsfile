@@ -1,22 +1,20 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                bat 'mvn clean compile'
+                // We do it all in one go. Maven will generate the HTML report automatically.
+                bat 'mvn clean test -Dmaven.test.failure.ignore=true'
+            }
+            post {
+                always {
+                    // This one always works because the JUnit plugin is built-in
+                    junit '**/target/surefire-reports/*.xml'
+                    
+                    // Instead of a 'step', we just save the folder so you can see it
+                    archiveArtifacts artifacts: 'target/site/jacoco/**', allowEmptyArchive: true
+                }
             }
         }
-        stage('Test') {
-    steps {
-        bat 'mvn test -Dmaven.test.failure.ignore=true'
-    }
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
-            // Add this line to record the coverage report
-            recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
-        }
-    }
-}
     }
 }
