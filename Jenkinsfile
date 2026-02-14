@@ -1,18 +1,20 @@
 pipeline {
     agent any
     stages {
-        stage('Build & Test') {
+        stage('Build') {
             steps {
-                // We do it all in one go. Maven will generate the HTML report automatically.
-                bat 'mvn clean test -Dmaven.test.failure.ignore=true'
+                bat 'mvn clean compile'
+            }
+        }
+        stage('Test') {
+            steps {
+                // The '-Dmaven.test.failure.ignore=true' flag is the secret!
+                bat 'mvn test -Dmaven.test.failure.ignore=true'
             }
             post {
                 always {
-                    // This one always works because the JUnit plugin is built-in
+                    // This step reads the XML and turns Jenkins YELLOW if tests failed
                     junit '**/target/surefire-reports/*.xml'
-                    
-                    // Instead of a 'step', we just save the folder so you can see it
-                    archiveArtifacts artifacts: 'target/site/jacoco/**', allowEmptyArchive: true
                 }
             }
         }
