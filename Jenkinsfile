@@ -7,16 +7,16 @@ pipeline {
             }
         }
         stage('Test') {
-            steps {
-                // The '-Dmaven.test.failure.ignore=true' flag is the secret!
-                bat 'mvn test -Dmaven.test.failure.ignore=true'
-            }
-            post {
-                always {
-                    // This step reads the XML and turns Jenkins YELLOW if tests failed
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
+    steps {
+        bat 'mvn test -Dmaven.test.failure.ignore=true'
+    }
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+            // Add this line to record the coverage report
+            recordCoverage(tools: [[parser: 'JACOCO', pattern: '**/target/site/jacoco/jacoco.xml']])
         }
+    }
+}
     }
 }
