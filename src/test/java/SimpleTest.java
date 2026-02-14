@@ -36,4 +36,9 @@ class CalculatorTest {
     void testMultiplyOne() {
         assertEquals(10, calc.multiply(10, 1));
     }
+    @Test
+    @Disabled("Waiting for bug fix #104") // This tells JUnit: "Ignore me!"
+    void testFailure() {
+        assertEquals(100, calc.add(1, 1));
+    }
 }
