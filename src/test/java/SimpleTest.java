@@ -1,20 +1,46 @@
 package com.example;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Calculator Logic Experiment")
 class CalculatorTest {
     Calculator calc = new Calculator();
 
     @Test
-    void testAddition() {
-        // We expect 10 + 5 to be 15
-        assertEquals(15, calc.add(10, 5), "Addition logic is broken!");
+    @DisplayName("Basic Addition")
+    void testAdd() {
+        assertEquals(10, calc.add(5, 5));
     }
 
     @Test
-    void testMultiplication() {
-        // We expect 2 * 3 to be 6
-        assertEquals(6, calc.multiply(2, 3));
+    @DisplayName("Addition with Zero")
+    void testAddZero() {
+        assertEquals(5, calc.add(5, 0));
+    }
+
+    @Test
+    @DisplayName("Basic Multiplication")
+    void testMultiply() {
+        assertEquals(20, calc.multiply(4, 5));
+    }
+
+    @Test
+    @DisplayName("Multiply by Zero")
+    void testMultiplyZero() {
+        assertEquals(0, calc.multiply(10, 0));
+    }
+
+    @Test
+    @DisplayName("Multiply by One")
+    void testMultiplyOne() {
+        assertEquals(10, calc.multiply(10, 1));
+    }
+
+    @Test
+    @DisplayName("Intintentional Failure Test")
+    void testFailure() {
+        // This will turn your Jenkins YELLOW
+        assertEquals(100, calc.add(1, 1), "Checking if Jenkins detects failure!");
     }
 }
