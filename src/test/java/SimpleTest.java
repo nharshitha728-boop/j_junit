@@ -36,11 +36,4 @@ class CalculatorTest {
     void testMultiplyOne() {
         assertEquals(10, calc.multiply(10, 1));
     }
-
-    @Test
-    @DisplayName("Intintentional Failure Test")
-    void testFailure() {
-        // This will turn your Jenkins YELLOW
-        assertEquals(100, calc.add(1, 1), "Checking if Jenkins detects failure!");
-    }
 }
